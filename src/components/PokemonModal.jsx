@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Button, Modal, Typography } from '@mui/material'
 import PokemonForm from './PokemonForm'
 
-export default function PokemonModal ({ title, onClose, isModalVisible }) {
+export default function PokemonModal ({ title, onClose, isModalVisible, currentPokemon }) {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -26,7 +26,7 @@ export default function PokemonModal ({ title, onClose, isModalVisible }) {
         <Typography id='modal-modal-title' variant='h6' component='h2'>
           {title}
         </Typography>
-        <PokemonForm />
+        <PokemonForm onClose={onClose} currentPokemon={currentPokemon} />
         <Button
           variant='outlined'
           sx={{ width: '100%' }}

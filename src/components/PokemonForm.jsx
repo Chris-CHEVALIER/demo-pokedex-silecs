@@ -1,14 +1,31 @@
 import React, { useState } from 'react'
 import { Button, FormControl, Input, InputLabel } from '@mui/material'
+import { addPokemon, updatePokemon } from '../Fire'
 
-export default function PokemonForm () {
-  const [number, setNumber] = useState("")
-  const [name, setName] = useState('')
-  const [image, setImage] = useState('')
-  const [description, setDescription] = useState('')
+export default function PokemonForm ({ currentPokemon, onClose }) {
+  const [number, setNumber] = useState(
+    currentPokemon ? currentPokemon.number : ''
+  )
+  const [name, setName] = useState(currentPokemon ? currentPokemon.name : '')
+  const [image, setImage] = useState(currentPokemon ? currentPokemon.image : '')
+  const [description, setDescription] = useState(
+    currentPokemon ? currentPokemon.description : ''
+  )
 
   const onSubmit = () => {
-    console.log(number, name, image, description)
+    let pokemon = {
+      number,
+      name,
+      image,
+      description
+    }
+    if (currentPokemon) {
+      pokemon.id = currentPokemon.id
+      updatePokemon(pokemon)
+    } else {
+      addPokemon(pokemon)
+    }
+    onClose()
   }
 
   return (
@@ -20,7 +37,7 @@ export default function PokemonForm () {
           sx={{ width: '100%' }}
           type='number'
           placeholder='Le numéro du Pokémon'
-          onChange={(e) => setNumber(e.target.value)}
+          onChange={e => setNumber(e.target.value)}
           value={number}
         />
       </FormControl>
@@ -31,7 +48,7 @@ export default function PokemonForm () {
           sx={{ width: '100%' }}
           type='text'
           placeholder='Le nom du Pokémon'
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.target.value)}
           value={name}
         />
       </FormControl>
@@ -42,7 +59,7 @@ export default function PokemonForm () {
           sx={{ width: '100%' }}
           type='text'
           placeholder="L'image du Pokémon"
-          onChange={(e) => setImage(e.target.value)}
+          onChange={e => setImage(e.target.value)}
           value={image}
         />
       </FormControl>
@@ -54,12 +71,17 @@ export default function PokemonForm () {
           multiline
           type='text'
           placeholder='La description du Pokémon'
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           value={description}
         />
       </FormControl>
-      <Button variant='outlined' mL onClick={onSubmit}>
-        Ajouter
+      <Button
+        variant='outlined'
+        sx={{ my: 2, width: '100%' }}
+        color={currentPokemon ? 'warning' : 'primary'}
+        onClick={onSubmit}
+      >
+        {currentPokemon ? 'Modifier' : 'Ajouter'}
       </Button>
     </>
   )
